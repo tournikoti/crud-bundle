@@ -1,0 +1,37 @@
+{% form_theme form "bootstrap_5_horizontal_layout.html.twig" %}
+
+<nav class="navbar navbar-expand-lg bg-light">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-action"
+                aria-controls="navbar-action" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbar-action">
+            {{ form_start(form) }}
+                {% for field in form %}
+                    <div class="d-inline-block">
+                        {{ form_widget(field) }}
+                    </div>
+                {% endfor %}
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            {{ form_end(form) }}
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item dropdown first last">
+                    <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"
+                       aria-expanded="false" spellcheck="false">
+                        {% trans %}Action List{% endtrans %}
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end menu_level_1">
+                        {% if url_new is not null %}
+                            <li class="first">
+                                <a href="{{ url_new }}" class="dropdown-item">
+                                    {% trans %}Create new{% endtrans %}
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

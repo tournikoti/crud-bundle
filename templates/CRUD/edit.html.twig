@@ -1,0 +1,27 @@
+{% extends '@TournikotiCrud/admin.html.twig' %}
+
+{% block title %}{{ title | trans }}{% endblock %}
+
+{% block body_title %}{{ title | trans }}{% endblock %}
+
+{% block body_content %}
+    {% set form_id = 'form-user-edit' %}
+
+    {{ include('@TournikotiCrud/CRUD/_form.html.twig', { form_id: form_id }) }}
+
+    <button type="submit" class="btn btn-success" form="{{ form_id }}">
+        {% trans %}Update{% endtrans %}
+    </button>
+
+    {% if security.can('index') and router.hasRoute('index') %}
+        <a class="btn btn-primary" href="{{ path(router.getRoute('index').name) }}">
+            {% trans %}Back to list{% endtrans %}
+        </a>
+    {% endif %}
+
+    {% if security.can('delete') and router.hasRoute('delete') %}
+        <a class="btn btn-danger" href="{{ path(router.getRoute('delete').name, { id: entity.id }) }}">
+            {% trans %}Delete{% endtrans %}
+        </a>
+    {% endif %}
+{% endblock %}

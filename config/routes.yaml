@@ -1,0 +1,7 @@
+tournikoti_crud_dashboard:
+  path: /
+  controller: Tournikoti\CrudBundle\Controller\DashboardController
+
+tournikoti_crud_entity:
+  resource: .
+  type: admin

@@ -1,0 +1,21 @@
+{% extends '@TournikotiCrud/admin.html.twig' %}
+
+{% block title %}{{ title | trans }}{% endblock %}
+
+{% block body_title %}{{ title | trans }}{% endblock %}
+
+{% block body_content %}
+    {% set form_id = 'form-user-new' %}
+
+    {{ include('@TournikotiCrud/CRUD/_form.html.twig', { form_id: form_id }) }}
+
+    <button type="submit" class="btn btn-success" form="{{ form_id }}">
+        {% trans %}Add{% endtrans %}
+    </button>
+
+    {% if security.can('index') and router.hasRoute('index') %}
+        <a class="btn btn-primary" href="{{ path(router.getRoute('index').name) }}">
+            {% trans %}Back to list{% endtrans %}
+        </a>
+    {% endif %}
+{% endblock %}

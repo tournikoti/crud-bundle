@@ -1,0 +1,38 @@
+{% extends '@TournikotiCrud/admin.html.twig' %}
+
+{% block title %}{{ title | trans }}{% endblock %}
+
+{% block body_title %}{{ title | trans }}{% endblock %}
+
+{% block body_content %}
+    <table class="table">
+        <tbody>
+        {% for field in configurationList.getFields() %}
+            <tr>
+                <th>{{ field.label | trans }}</th>
+                <td>{{ propertyRenderer.render(entity, field) | raw }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="action-bar">
+        {% if security.can('index') and router.hasRoute('index') %}
+            <a class="btn btn-primary" href="{{ path(router.getRoute('index').name) }}">
+                {% trans %}Back to list{% endtrans %}
+            </a>
+        {% endif %}
+
+        {% if security.can('edit') and router.hasRoute('edit') %}
+            <a class="btn btn-primary" href="{{ path(router.getRoute('edit').name, {'id': entity.id}) }}">
+                {% trans %}Edit{% endtrans %}
+            </a>
+        {% endif %}
+
+        {% if security.can('delete') and router.hasRoute('delete') %}
+            <a class="btn btn-danger" href="{{ path(router.getRoute('delete').name, { id: entity.id }) }}">
+                {% trans %}Delete{% endtrans %}
+            </a>
+        {% endif %}
+    </div>
+{% endblock %}

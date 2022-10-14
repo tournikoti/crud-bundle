@@ -1,0 +1,48 @@
+services:
+  tournikoti.crud.menu_builder:
+    class: Tournikoti\CrudBundle\Menu\MainMenuBuilder
+    arguments:
+      - '@knp_menu.factory'
+    tags:
+      - { name: knp_menu.menu_builder, method: createSidebarMenu, alias: admin-sidebar }
+      - { name: knp_menu.menu_builder, method: createTopbarMenu, alias: admin-topbar }
+
+  Tournikoti\CrudBundle\Controller\DashboardController:
+    public: true
+    arguments:
+      - '@twig'
+
+  Tournikoti\CrudBundle\Command\CrudMaker:
+    arguments:
+      - '@maker.doctrine_helper'
+      - '@doctrine.orm.entity_manager'
+      - '@maker.renderer.form_type_renderer'
+    tags:
+      - { name: maker.command }
+
+  tournikoti.crud.admin_route_loader:
+    class: Tournikoti\CrudBundle\Route\AdminRouteLoader
+    tags:
+      - { name: routing.loader }
+
+  tournikoti.crud.configuration_list:
+    class: Tournikoti\CrudBundle\Configuration\ConfigurationList
+
+  tournikoti.crud.property_renderer:
+    class: Tournikoti\CrudBundle\Renderer\PropertyRenderer
+    arguments:
+      - '@Twig\Environment'
+
+  tournikoti.crud.security_factory:
+    class: Tournikoti\CrudBundle\Security\SecurityFactory
+    arguments:
+      - '@security.authorization_checker'
+
+  tournikoti.crud.router_factory:
+    class: Tournikoti\CrudBundle\Route\RouterFactory
+
+  tournikoti.crud.template_registry_factory:
+    class: Tournikoti\CrudBundle\Template\TemplateRegistryFactory
+
+  Tournikoti\CrudBundle\Configuration\ConfigurationListInterface: '@tournikoti.crud.configuration_list'
+  Tournikoti\CrudBundle\Renderer\PropertyRendererInterface: '@tournikoti.crud.property_renderer'

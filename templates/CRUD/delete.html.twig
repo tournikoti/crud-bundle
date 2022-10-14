@@ -1,0 +1,27 @@
+{% extends '@TournikotiCrud/admin.html.twig' %}
+
+{% block title %}{{ title | trans }}{% endblock %}
+
+{% block body %}
+    <div class="alert alert-danger alert-dismiss">
+        {% trans %}Are you sure you want to delete this item ?{% endtrans %}
+    </div>
+    <form method="post" action="{{ path(router.getRoute('delete').name, {'id': entity.id}) }}">
+        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ entity.id) }}">
+        <button class="btn btn-danger">
+            {% trans %}Delete{% endtrans %}
+        </button>
+
+        {% if security.can('index') and router.hasRoute('index') %}
+            <a class="btn btn-primary" href="{{ path(router.getRoute('index').name) }}">
+                {% trans %}Back to list{% endtrans %}
+            </a>
+        {% endif %}
+
+        {% if security.can('edit') and router.hasRoute('edit') %}
+            <a class="btn btn-primary" href="{{ path(router.getRoute('edit').name, { id: entity.id }) }}">
+                {% trans %}Back to edit{% endtrans %}
+            </a>
+        {% endif %}
+    </form>
+{% endblock %}

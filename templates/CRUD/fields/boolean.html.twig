@@ -1,0 +1,9 @@
+{% if value %}
+    <span class="badge bg-success">
+        {% trans %}Yes{% endtrans %}
+    </span>
+{% else %}
+    <span class="badge bg-danger">
+        {% trans %}No{% endtrans %}
+    </span>
+{% endif %}

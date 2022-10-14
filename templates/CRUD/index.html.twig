@@ -1,0 +1,76 @@
+{% extends '@TournikotiCrud/admin.html.twig' %}
+
+{% block title %}{{ title | trans }}{% endblock %}
+
+{% block body_title %}{{ title | trans }}{% endblock %}
+
+{% set card_body_classes = 'p-0' %}
+
+{% block body_navbar %}
+    {% include '@TournikotiCrud/components/navbar-action.html.twig' with {
+        form: form,
+        url_new: security.can('new') and router.hasRoute('new') ? path(router.getRoute('new').name) : null
+    } %}
+{% endblock %}
+
+{% block body_content %}
+    <table class="table">
+        <thead>
+        <tr>
+            {% for field in configurationList.getFields() %}
+                <th>{{ field.label | trans }}</th>
+            {% endfor %}
+            <th class="col-action">{% trans %}Actions{% endtrans %}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                {% for field in configurationList.getFields() %}
+                    <td>{{ propertyRenderer.render(entity, field) | raw }}</td>
+                {% endfor %}
+                <td>
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                            {% trans %}Action{% endtrans %}
+                        </button>
+                        <ul class="dropdown-menu">
+                            {% if security.can('show') and router.hasRoute('show') %}
+                                <li>
+                                    <a class="dropdown-item"
+                                       href="{{ path(router.getRoute('show').name, {'id': entity.id}) }}">
+                                        {% trans %}Show{% endtrans %}
+                                    </a>
+                                </li>
+                            {% endif %}
+                            {% if security.can('edit') and router.hasRoute('edit') %}
+                                <li>
+                                    <a class="dropdown-item"
+                                       href="{{ path(router.getRoute('edit').name, {'id': entity.id}) }}">
+                                        {% trans %}Edit{% endtrans %}
+                                    </a>
+                                </li>
+                            {% endif %}
+                            {% if security.can('delete') and router.hasRoute('delete') %}
+                                <li>
+                                    <a class="dropdown-item"
+                                       href="{{ path(router.getRoute('delete').name, {'id': entity.id}) }}">
+                                        {% trans %}Delete{% endtrans %}
+                                    </a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="12">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {{ knp_pagination_render(entities) }}
+{% endblock %}
