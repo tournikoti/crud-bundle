@@ -2,12 +2,17 @@
   "license": "UNLICENSED",
   "private": true,
   "devDependencies": {
-    "@symfony/webpack-encore": "^4.1.1"
+    "@symfony/webpack-encore": "^4.1.1",
+    "sass": "^1.55.0",
+    "sass-loader": "^13.1.0"
   },
   "scripts": {
     "dev-server": "encore dev-server",
     "dev": "encore dev",
     "watch": "encore dev --watch",
     "build": "encore production"
+  },
+  "dependencies": {
+    "bootstrap": "^5.2.2"
   }
 }
