@@ -2,7 +2,7 @@ var Encore = require('@symfony/webpack-encore');
 
 Encore
     .setOutputPath('./public/')
-    .setPublicPath('')
+    .setPublicPath('/')
     .setManifestKeyPrefix('')
 
     .cleanupOutputBeforeBuild()
@@ -11,7 +11,7 @@ Encore
     .enableVersioning(false)
     .disableSingleRuntimeChunk()
 
-    .addStyleEntry('app', './assets/scss/app.scss')
+    .addEntry('app', './assets/js/app.js')
 ;
 
 module.exports = Encore.getWebpackConfig();
