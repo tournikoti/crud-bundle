@@ -1,0 +1,37 @@
+.sidebar {
+  @extend .bg-light;
+  --sidebar-link-padding-x: 0;
+  --sidebar-link-color: #{$navbar-light-color};
+  --sidebar-link-hover-color: #{$navbar-light-hover-color};
+
+  min-width: 230px;
+
+  &.sidebar-dark {
+    @extend .bg-dark;
+    --sidebar-link-color: #{$navbar-dark-color};
+    --sidebar-link-hover-color: #{$navbar-dark-hover-color};
+  }
+
+  ul {
+    @extend .ps-0;
+    width: 100%;
+
+    li {
+
+      &.current a {
+        color: var(--sidebar-link-hover-color);
+      }
+
+      a {
+        display: block;
+        padding: 0.5rem 1rem;
+        color: var(--sidebar-link-color);
+        text-decoration: none;
+
+        &:hover, &:focus {
+          color: var(--sidebar-link-hover-color);
+        }
+      }
+    }
+  }
+}

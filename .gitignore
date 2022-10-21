@@ -1,1 +1,11 @@
-.idea/
+###> IDE ###
+/.idea/
+/nbproject/
+###< IDE ###
+
+###> symfony/webpack-encore-bundle ###
+/node_modules/
+/public/entrypoints.json
+/public/manifest.json
+npm-debug.log
+###< symfony/webpack-encore-bundle ###
