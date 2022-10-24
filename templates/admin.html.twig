@@ -10,7 +10,9 @@
         <meta name="language" content="fr-FR" />
 
         {% block stylesheets %}
-            <link rel="stylesheet" href="{{ asset('bundles/tournikoticrud/app.css') }}">
+            {% for path in assetManager.css %}
+                <link rel="stylesheet" href="{{ asset(path) }}">
+            {% endfor %}
         {% endblock %}
     </head>
     <body>
@@ -56,7 +58,9 @@
         </div>
 
         {% block javascripts %}
-            <script src="{{ asset('bundles/tournikoticrud/app.js') }}"></script>
+            {% for path in assetManager.js %}
+                <script src="{{ asset(path) }}"></script>
+            {% endfor %}
         {% endblock %}
     </body>
 </html>

@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\HttpFoundation\Request;
+use Tournikoti\CrudBundle\Asset\AssetManagerInterface;
 use Tournikoti\CrudBundle\Configuration\ConfigurationListInterface;
 use Tournikoti\CrudBundle\Renderer\PropertyRendererInterface;
 use Tournikoti\CrudBundle\Route\RouterFactory;
@@ -30,6 +31,7 @@ abstract class AdminCRUD implements AdminCRUDInterface
     public function __construct(
         protected readonly EntityManagerInterface   $entityManager,
         private readonly ConfigurationListInterface $configurationList,
+        private readonly AssetManagerInterface      $assetManager,
         private readonly PropertyRendererInterface  $propertyRenderer,
         readonly SecurityFactory                    $securityFactory,
         readonly RouterFactory                      $routerFactory,
@@ -39,7 +41,7 @@ abstract class AdminCRUD implements AdminCRUDInterface
         $this->title = $this->humanize($this->getRouterPrefix());
         $this->security = $securityFactory->create($this->getRouterPrefix());
         $this->router = $routerFactory->create($this->getRouterPrefix(), $this->getControllerClass());
-        $this->templateRegistry = $templateRegistryFactory->create($this->getRouterPrefix(), $this->title);
+        $this->templateRegistry = $templateRegistryFactory->create($this->getRouterPrefix());
         $this->configurationList($this->configurationList);
         $this->configurationRouter($this->router);
         $this->configurationTemplateRegistry($this->templateRegistry);
@@ -89,6 +91,7 @@ abstract class AdminCRUD implements AdminCRUDInterface
             'security' => $this->getSecurity(),
             'configurationList' => $this->getConfigurationList(),
             'router' => $this->getRouter(),
+            'assetManager' => $this->getAssetManager(),
             'propertyRenderer' => $this->getPropertyRenderer(),
         ], $parameters);
     }
@@ -96,6 +99,11 @@ abstract class AdminCRUD implements AdminCRUDInterface
     public function getSecurity(): Security
     {
         return $this->security;
+    }
+
+    public function getAssetManager(): AssetManagerInterface
+    {
+        return $this->assetManager;
     }
 
     public function getConfigurationList(): ConfigurationListInterface
