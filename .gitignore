@@ -7,5 +7,6 @@
 /node_modules/
 /public/entrypoints.json
 /public/manifest.json
+/public/*.txt
 npm-debug.log
 ###< symfony/webpack-encore-bundle ###

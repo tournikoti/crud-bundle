@@ -11,6 +11,7 @@ services:
     public: true
     arguments:
       - '@twig'
+      - '@tournikoti.crud.asset_manager'
 
   Tournikoti\CrudBundle\Command\CrudMaker:
     arguments:
@@ -44,5 +45,14 @@ services:
   tournikoti.crud.template_registry_factory:
     class: Tournikoti\CrudBundle\Template\TemplateRegistryFactory
 
+  tournikoti.crud.asset_manager:
+    class: Tournikoti\CrudBundle\Asset\AssetManager
+
+  Tournikoti\CrudBundle\Route\AdminRouteLoader: '@tournikoti.crud.admin_route_loader'
+  Tournikoti\CrudBundle\Security\SecurityFactory: '@tournikoti.crud.security_factory'
+  Tournikoti\CrudBundle\Route\RouterFactory: '@tournikoti.crud.router_factory'
+  Tournikoti\CrudBundle\Template\TemplateRegistryFactory: '@tournikoti.crud.template_registry_factory'
+
   Tournikoti\CrudBundle\Configuration\ConfigurationListInterface: '@tournikoti.crud.configuration_list'
   Tournikoti\CrudBundle\Renderer\PropertyRendererInterface: '@tournikoti.crud.property_renderer'
+  Tournikoti\CrudBundle\Asset\AssetManagerInterface: '@tournikoti.crud.asset_manager'

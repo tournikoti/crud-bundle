@@ -63,7 +63,7 @@ class MainMenuBuilder
         $menu = $this->factory->createItem('root');
 
         foreach ($this->sidebarItems as $item) {
-            $menu->addChild('Dashboard', [
+            $menu->addChild($item['label'], [
                 'route' => $item['route']
             ]);
         }

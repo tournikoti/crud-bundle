@@ -23,5 +23,8 @@ class TournikotiCrudExtension extends Extension
 
         $container->getDefinition('tournikoti.crud.menu_builder')
             ->addArgument($config['menus']);
+
+        $container->getDefinition('tournikoti.crud.asset_manager')
+            ->addArgument($config['assets']);
     }
 }
