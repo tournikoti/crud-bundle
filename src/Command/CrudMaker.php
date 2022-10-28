@@ -143,10 +143,10 @@ class CrudMaker extends AbstractMaker
 
         $routePrefix = Str::asSnakeCase($controllerClassDetails->getRelativeNameWithoutSuffix());
 
-        $this->generateForm($formClassDetails, $entityClassDetails, $entityDoctrineDetails);
-        $this->generateController($generator, $controllerClassDetails, $adminClassDetails);
-        $this->generateAdmin($generator, $adminClassDetails, $controllerClassDetails, $formClassDetails, $entityClassDetails, $routePrefix);
-        $this->updateConfig($generator, $input->getOption('service'), $io, $adminClassDetails);
+        $this->generateForm($formClassDetails, $entityClassDetails, $entityDoctrineDetails, $io);
+        $this->generateController($generator, $controllerClassDetails, $adminClassDetails, $io);
+        $this->generateAdmin($generator, $adminClassDetails, $controllerClassDetails, $formClassDetails, $entityClassDetails, $io, $routePrefix);
+        $this->updateConfig($generator, $input->getOption('service'), $adminClassDetails);
 
         $generator->writeChanges();
 
@@ -174,9 +174,15 @@ class CrudMaker extends AbstractMaker
         ClassNameDetails $controllerClassDetails,
         ClassNameDetails $formClassDetails,
         ClassNameDetails $entityClassDetails,
+        ConsoleStyle     $io,
         string           $routePrefix
     ): void
     {
+        if (class_exists($classDetails->getFullName())) {
+            $io->warning(sprintf("Admin Class '%s' already exist", $classDetails->getFullName()));
+            return ;
+        }
+
         $useStatements = new UseStatementGenerator([
             $controllerClassDetails->getFullName(),
             $entityClassDetails->getFullName(),
@@ -201,9 +207,15 @@ class CrudMaker extends AbstractMaker
     private function generateForm(
         ClassNameDetails $classDetails,
         ClassNameDetails $entityClassDetails,
-        EntityDetails    $entityDoctrineDetails
+        EntityDetails    $entityDoctrineDetails,
+        ConsoleStyle $io
     )
     {
+        if (class_exists($classDetails->getFullName())) {
+            $io->warning(sprintf("Form Type '%s' already exist", $classDetails->getFullName()));
+            return ;
+        }
+
         $this->formTypeRenderer->render(
             $classDetails,
             $entityDoctrineDetails->getFormFields(),
@@ -214,9 +226,15 @@ class CrudMaker extends AbstractMaker
     private function generateController(
         Generator        $generator,
         ClassNameDetails $classDetails,
-        ClassNameDetails $adminClassDetails
+        ClassNameDetails $adminClassDetails,
+        ConsoleStyle $io
     ): void
     {
+        if (class_exists($classDetails->getFullName())) {
+            $io->warning(sprintf("Controller Class '%s' already exist", $classDetails->getFullName()));
+            return ;
+        }
+
         $useStatements = new UseStatementGenerator([
             $adminClassDetails->getFullName(),
             CRUDController::class
@@ -229,18 +247,20 @@ class CrudMaker extends AbstractMaker
         ]);
     }
 
-    private function updateConfig(Generator $generator, string $path, ConsoleStyle $io, ClassNameDetails $classDetails)
+    private function updateConfig(Generator $generator, string $path, ClassNameDetails $classDetails)
     {
-        $manipulator = $this->createYamlManipulator($path);
+        if (!class_exists($classDetails->getFullName())) {
+            $manipulator = $this->createYamlManipulator($path);
 
-        $manipulator
-            ->section('services')
-            ->add($classDetails->getFullName())
-            ->setValue('tags', ["name" => "admin.crud"])
-            ->end()
-            ->end();
+            $manipulator
+                ->section('services')
+                ->add($classDetails->getFullName())
+                ->setValue('tags', ["name" => "admin.crud"])
+                ->end()
+                ->end();
 
-        $generator->dumpFile($path, $manipulator->get());
+            $generator->dumpFile($path, $manipulator->get());
+        }
     }
 
     private function createYamlManipulator(string $path): YamlFileManipulator
